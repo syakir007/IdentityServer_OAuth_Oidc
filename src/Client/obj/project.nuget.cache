@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "3Fj/ApksVrTnH466MbOU3GzxZR0RMuRtCtVGthC4lMndN0KYJuLQ7GDOeJLUTYEARh6B9CvkuAj18HIv4WmdgA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\ahmad.syakir\\quickstart\\src\\Client\\Client.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\ahmad.syakir\\.nuget\\packages\\identitymodel\\6.0.0\\identitymodel.6.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
