@@ -16,7 +16,7 @@ public static class Config
                 Name = "verification",
                 UserClaims = new List<string>
                 {
-                    JwtClaimTypes.Email,
+                    JwtClaimTypes.Email, 
                     JwtClaimTypes.EmailVerified
 
                 }
@@ -46,6 +46,7 @@ public static class Config
     public static IEnumerable<Client> Clients =>
         new List<Client>
             {
+                // console client
                 new Client
                 {
                     ClientId  = "client",
@@ -59,6 +60,7 @@ public static class Config
                     AllowedScopes = {"api1"}
                 },
 
+                // mvc web client
                 new Client
                 {
                     ClientId = "web",
@@ -78,15 +80,15 @@ public static class Config
                     }
                 },
 
+                // angular web client
                  new Client
                 {
                     ClientId = "AngularClient",
-                    //ClientSecrets = { new Secret("secret".Sha256())},
                     RequirePkce = true,
                     RequireClientSecret= false,
                     AllowedGrantTypes = GrantTypes.Code,
-                    RedirectUris = {"http://localhost:4200"},
-                    PostLogoutRedirectUris = {"http://localhost:4200"},
+                    RedirectUris = {"http://localhost:4200/Home"},
+                    PostLogoutRedirectUris = {"http://localhost:4200/"},
 
                     AllowedCorsOrigins = { "http://localhost:4200" },
 
