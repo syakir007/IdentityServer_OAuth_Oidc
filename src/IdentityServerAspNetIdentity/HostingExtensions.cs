@@ -59,7 +59,7 @@ internal static class HostingExtensions
 
     // Migrate user to database
     // uncomment to seed user and role
-    /*public static async void EnsureSeedData(WebApplication app)
+    public static async void EnsureSeedData(WebApplication app)
     {
         using (var scope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
         {
@@ -73,7 +73,7 @@ internal static class HostingExtensions
 
             var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var alice = userMgr.FindByNameAsync("alice").Result;
-            if(alice == null)
+            if (alice == null)
             {
                 alice = new ApplicationUser
                 {
@@ -84,7 +84,7 @@ internal static class HostingExtensions
                 var result = userMgr.CreateAsync(alice, "Pass123$").Result;
                 await userMgr.AddToRoleAsync(alice, Role.Staff);
 
-                if(!result.Succeeded)
+                if (!result.Succeeded)
                 {
                     throw new Exception(result.Errors.First().Description);
                 }
@@ -142,11 +142,11 @@ internal static class HostingExtensions
             }
         }
     }
-*/
+
 
     // migrate config
     // uncomment to seed config data
-  /*  private static void InitializeDatabase(IApplicationBuilder app)
+    private static void InitializeDatabase(IApplicationBuilder app)
     {
         using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
         {
@@ -187,7 +187,7 @@ internal static class HostingExtensions
             }
         }
     }
-*/
+
 
     public static WebApplication ConfigurePipeline(this WebApplication app)
     { 
@@ -198,12 +198,13 @@ internal static class HostingExtensions
             app.UseDeveloperExceptionPage();
         }
 
-        //uncomment use seed function
+        //uncomment to use seed function
         //InitializeDatabase(app);
         //EnsureSeedData(app);
 
         app.UseStaticFiles();
         app.UseRouting();
+
         app.UseIdentityServer();
         app.UseAuthorization();
         

@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
-[Route("weather")]
-[Authorize(policy: "api2")]
+[ApiController]
+[Authorize(Policy = "StaffRights")]
+[Route("[controller]")]
 public class WeatherForecastController : ControllerBase
 {
     private static readonly string[] Summaries = new[]

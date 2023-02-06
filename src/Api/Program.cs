@@ -1,4 +1,5 @@
 using Microsoft.IdentityModel.Tokens;
+using Api.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,16 +7,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy",
-        builder => builder.AllowAnyHeader()
-        .AllowAnyOrigin()
-        .AllowAnyMethod());
+        builder =>
+        {
+            builder
+            .AllowAnyHeader()
+            .WithOrigins("Http://localhost:4200")
+            .AllowAnyMethod();
+        });
 });
 
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
         options.Authority = "https://localhost:5001";
-        options.Audience = "api1";
+        //options.Audience = "api1";
 
         options.TokenValidationParameters = new TokenValidationParameters
         {
@@ -25,16 +30,16 @@ builder.Services.AddAuthentication("Bearer")
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("ApiScope", policy =>
+    options.AddPolicy("StaffRights", policy =>
     {
         policy.RequireAuthenticatedUser();
-        policy.RequireClaim("scope", "api1");
+        policy.RequireRole(Role.Staff);
     });
 
-    options.AddPolicy("Api2", policy =>
+    options.AddPolicy("GeneralRight", policy =>
     {
         policy.RequireAuthenticatedUser();
-        policy.RequireClaim("scope", "api2");
+        policy.RequireRole(Role.Staff, Role.User);
     });
 });
     
@@ -60,6 +65,6 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers().RequireAuthorization();
+app.MapControllers();
 
 app.Run();

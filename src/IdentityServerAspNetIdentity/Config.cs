@@ -1,6 +1,7 @@
 ﻿using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
 using IdentityModel;
+using static System.Net.WebRequestMethods;
 
 namespace IdentityServerAspNetIdentity;
 
@@ -17,8 +18,15 @@ public static class Config
                 UserClaims = new List<string>
                 {
                     JwtClaimTypes.Email, 
-                    JwtClaimTypes.EmailVerified
-
+                    JwtClaimTypes.EmailVerified,
+                }
+            },
+            new IdentityResource()
+            {
+                Name = "role",
+                UserClaims = new List<string>
+                {
+                    JwtClaimTypes.Role
                 }
             }
         };
@@ -76,7 +84,8 @@ public static class Config
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         "verification",
-                        "api1"
+                        "api1",
+                        "role"
                     }
                 },
 
@@ -100,7 +109,91 @@ public static class Config
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         "verification",
-                        "api1"
+                        "api1",
+                        "role",
+                        "offline_access"
+                    }
+                },
+
+                new Client
+                {
+                    ClientId = "WebClient",
+                    RequirePkce = true,
+                    RequireClientSecret= false,
+                    AllowedGrantTypes = GrantTypes.Code,
+
+                    RedirectUris = {"http://localhost:4200/auth-callback"},
+                    PostLogoutRedirectUris = {"http://localhost:4200/logout-callback"},
+
+                    AllowedCorsOrigins = {"http://localhost:4200"},
+
+                    AllowOfflineAccess = true,
+                    AllowAccessTokensViaBrowser= true,
+
+                    AllowedScopes = new List<string>
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "verification",
+                        "api1",
+                        "api2",
+                        "role",
+                        "offline_access",
+                    }
+                },
+                new Client
+                {
+                    ClientId = "AngularOidcClient",
+                    RequirePkce = true,
+                    RequireClientSecret= false,
+                    AllowedGrantTypes = GrantTypes.Code,
+
+                    RedirectUris = {"http://localhost:4200/login-callback"},
+                    PostLogoutRedirectUris = {"http://localhost:4200/logout-callback"},
+
+                    AllowedCorsOrigins = {"http://localhost:4200"},
+
+                    AllowOfflineAccess = true,
+                    AllowAccessTokensViaBrowser= true,
+
+                    AllowedScopes = new List<string>
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "verification",
+                        "api1",
+                        "api2",
+                        "role",
+                        "offline_access",
+                    },
+
+                    AccessTokenLifetime = 3600,
+
+                    AbsoluteRefreshTokenLifetime = 86400,
+                },
+
+                new Client
+                {
+                     ClientId = "Client1",
+                    RequirePkce = true,
+                    RequireClientSecret= false,
+                    AllowedGrantTypes = GrantTypes.Code,
+
+                    RedirectUris = {"http://localhost:4200/auth-callback"},
+                    PostLogoutRedirectUris = {"http://localhost:4200/logout-callback"},
+
+                    AllowedCorsOrigins = {"http://localhost:4200"},
+
+                    AllowOfflineAccess = true,
+                    AllowAccessTokensViaBrowser= true,
+
+                    AllowedScopes = new List<string>
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "api1",
+                        "role",
+                        "offline_access",
                     }
                 }
 

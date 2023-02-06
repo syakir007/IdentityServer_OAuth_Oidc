@@ -3,11 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
 {
-    [Route("identity")]
-    [Authorize(policy: "ApiScope")]
+    [ApiController]
+    [Route("[controller]")]
+    [Authorize(Policy = "GeneralRight")]
     public class IdentityController : ControllerBase
     {
-        [HttpGet]
+        [HttpGet("identity")]
         public IActionResult Get()
         {
             return new JsonResult(from c in User.Claims select new {c.ValueType, c.Value});
