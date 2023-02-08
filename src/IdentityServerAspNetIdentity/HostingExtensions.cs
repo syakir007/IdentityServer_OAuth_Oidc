@@ -53,6 +53,17 @@ internal static class HostingExtensions
             })
             .AddDeveloperSigningCredential();
 
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowApiAuthentication",
+                b =>
+                {
+                    b.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+                });
+        });
+
         return builder.Build();
     }
 
@@ -201,6 +212,8 @@ internal static class HostingExtensions
         //uncomment to use seed function
         //InitializeDatabase(app);
         //EnsureSeedData(app);
+
+        app.UseCors("AllowApiAuthentication");
 
         app.UseStaticFiles();
         app.UseRouting();

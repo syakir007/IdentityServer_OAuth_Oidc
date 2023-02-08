@@ -11,7 +11,7 @@ builder.Services.AddCors(options =>
         {
             builder
             .AllowAnyHeader()
-            .WithOrigins("Http://localhost:4200")
+            .AllowAnyOrigin()
             .AllowAnyMethod();
         });
 });
@@ -20,26 +20,33 @@ builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
         options.Authority = "https://localhost:5001";
-        //options.Audience = "api1";
 
-        options.TokenValidationParameters = new TokenValidationParameters
+        options.TokenValidationParameters = new TokenValidationParameters()
         {
-            ValidateAudience = false
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidIssuer = "https://localhost:5001",
+            ValidAudiences = new List<string>
+            {
+                "identity",
+                "weather",
+                "https://localhost:5001/resources",
+            }
         };
     });
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("StaffRights", policy =>
+    options.AddPolicy("staff", policy =>
     {
         policy.RequireAuthenticatedUser();
-        policy.RequireRole(Role.Staff);
+        policy.RequireClaim("scope", new List<string> { "api1","api2" });
     });
 
-    options.AddPolicy("GeneralRight", policy =>
+    options.AddPolicy("user", policy =>
     {
         policy.RequireAuthenticatedUser();
-        policy.RequireRole(Role.Staff, Role.User);
+        policy.RequireClaim("scope", "api2");
     });
 });
     
@@ -61,6 +68,7 @@ if (app.Environment.IsDevelopment())
 app.UseCors("CorsPolicy");
 
 app.UseHttpsRedirection();
+app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
